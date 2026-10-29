@@ -1,0 +1,5 @@
+.git
+.keys
+**/.terraform
+*.tfstate*
+ansible/inventory/hosts.ini

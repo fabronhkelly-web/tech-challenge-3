@@ -1,0 +1,26 @@
+services:
+  toolbox:
+    build: .
+    image: tech-challenge-3-toolbox
+    platform: linux/amd64
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
+    environment:
+      # Optional: pick a named profile from your ~/.aws/credentials
+      AWS_PROFILE: ${AWS_PROFILE:-default}
+      # Keep the SSH key on a Linux volume so it keeps 0600 permissions
+      # (Windows-mounted folders make it world-readable and SSH refuses it).
+      TF_VAR_ssh_key_dir: /keys
+      # A Windows-mounted folder looks world-writable, which makes Ansible skip
+      # ansible.cfg unless it is named explicitly.
+      ANSIBLE_CONFIG: /workspace/ansible/ansible.cfg
+    volumes:
+      - .:/workspace
+      # Your AWS credentials from Windows (C:\Users\<you>\.aws). Read-write so
+      # `aws configure` inside the container saves them there too.
+      - ~/.aws:/root/.aws
+      - ssh-keys:/keys
+
+volumes:
+  ssh-keys:

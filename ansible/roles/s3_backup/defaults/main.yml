@@ -1,0 +1,8 @@
+---
+s3_backup_enabled: true
+s3_backup_source_file: /var/www/html/index.html
+s3_backup_prefix: site
+# s3_backup_bucket and s3_backup_region come from group_vars, which reads the
+# Terraform-generated inventory (s3_bucket_name, aws_region).
+s3_backup_bucket: ""
+s3_backup_region: us-east-1

@@ -1,0 +1,4 @@
+---
+nginx_web_root: /var/www/html
+nginx_server_name: "_"
+nginx_site_name: hello-world

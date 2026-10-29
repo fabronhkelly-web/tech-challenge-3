@@ -1,0 +1,5 @@
+---
+website_root: /var/www/html
+website_title: "Hello, World!"
+website_message: "Provisioned with Terraform, configured with Ansible."
+website_environment: dev

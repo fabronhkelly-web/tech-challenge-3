@@ -1,0 +1,33 @@
+---
+# Configure the EC2 instance provisioned by Terraform:
+#   1. nginx       - install and configure the Nginx web server
+#   2. website     - deploy the "Hello, World!" page and verify it is served
+#   3. s3_backup   - copy the page to the S3 bucket using the instance's IAM role
+- name: Configure web server
+  hosts: web
+  become: true
+  gather_facts: false
+
+  pre_tasks:
+    - name: Wait for SSH to come up on the new instance
+      ansible.builtin.wait_for_connection:
+        delay: 5
+        timeout: 300
+
+    - name: Wait for cloud-init to finish first boot
+      ansible.builtin.command: cloud-init status --wait
+      changed_when: false
+
+    - name: Gather facts
+      ansible.builtin.setup:
+
+  roles:
+    - role: nginx
+    - role: website
+    - role: s3_backup
+      when: s3_backup_enabled | bool
+
+  post_tasks:
+    - name: Show where the site is live
+      ansible.builtin.debug:
+        msg: "Hello World page deployed: http://{{ ansible_host }}/"

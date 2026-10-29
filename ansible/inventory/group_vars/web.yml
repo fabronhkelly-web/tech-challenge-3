@@ -1,0 +1,22 @@
+---
+# Variables shared by every host in the [web] group.
+# Values that come from Terraform (ansible_host, SSH key, s3_bucket_name,
+# aws_region, deploy_environment) are written into inventory/hosts.ini by
+# Terraform itself; this file wires them into each role.
+
+# --- nginx role ---
+nginx_web_root: /var/www/hello-world
+nginx_server_name: "_"
+
+# --- website role ---
+website_root: "{{ nginx_web_root }}"
+website_title: "Hello, World!"
+website_message: "Provisioned with Terraform, configured with Ansible."
+website_environment: "{{ deploy_environment }}"
+
+# --- s3_backup role ---
+# Upload the deployed page to the project's S3 bucket using the EC2 IAM role.
+s3_backup_enabled: true
+s3_backup_source_file: "{{ nginx_web_root }}/index.html"
+s3_backup_bucket: "{{ s3_bucket_name }}"
+s3_backup_region: "{{ aws_region }}"

@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  role_name: s3_backup
+  author: tech-challenge-3
+  description: Upload the deployed site to S3 using the EC2 instance role
+  license: MIT
+  min_ansible_version: "2.15"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - noble
+dependencies: []

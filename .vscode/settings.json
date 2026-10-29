@@ -1,0 +1,12 @@
+{
+  "files.associations": {
+    "**/ansible/**/*.yml": "ansible",
+    "*.tftpl": "terraform"
+  },
+  "files.eol": "\n",
+  "[terraform]": {
+    "editor.defaultFormatter": "hashicorp.terraform",
+    "editor.formatOnSave": true
+  },
+  "ansible.validation.lint.enabled": true
+}

@@ -1,0 +1,30 @@
+---
+# Proves the EC2 IAM role works end to end: the instance uploads its own web
+# page to the project bucket without any access keys on the server.
+
+- name: Check that the bucket name was provided by Terraform
+  ansible.builtin.assert:
+    that:
+      - s3_backup_bucket | length > 0
+    fail_msg: "Bucket name is missing. Run `terraform apply` to regenerate inventory/hosts.ini."
+
+- name: Install the AWS CLI (snap)
+  ansible.builtin.command: snap install aws-cli --classic
+  args:
+    creates: /snap/bin/aws
+
+- name: Upload the deployed page to S3 using the instance role
+  ansible.builtin.command: >
+    /snap/bin/aws s3 cp {{ s3_backup_source_file }}
+    s3://{{ s3_backup_bucket }}/{{ s3_backup_prefix }}/index.html
+    --region {{ s3_backup_region }}
+  register: s3_backup_upload
+  changed_when: "'upload:' in s3_backup_upload.stdout"
+
+- name: Confirm the object is in the bucket
+  ansible.builtin.command: >
+    /snap/bin/aws s3 ls s3://{{ s3_backup_bucket }}/{{ s3_backup_prefix }}/
+    --region {{ s3_backup_region }}
+  register: s3_backup_listing
+  changed_when: false
+  failed_when: "'index.html' not in s3_backup_listing.stdout"

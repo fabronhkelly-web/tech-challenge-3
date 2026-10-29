@@ -1,0 +1,28 @@
+# {{ ansible_managed }}
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    server_name {{ nginx_server_name }};
+    root {{ nginx_web_root }};
+    index index.html;
+
+    # Basic security headers
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header Referrer-Policy "no-referrer" always;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    # Lightweight endpoint for load balancers / uptime checks
+    location = /health {
+        access_log off;
+        default_type text/plain;
+        return 200 "ok\n";
+    }
+
+    access_log /var/log/nginx/{{ nginx_site_name }}.access.log;
+    error_log  /var/log/nginx/{{ nginx_site_name }}.error.log;
+}
