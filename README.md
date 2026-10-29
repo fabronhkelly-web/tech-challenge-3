@@ -400,3 +400,9 @@ Evidence of each step of a real deployment, taken on Windows 11 with VS Code and
 | 25 | Role policies: S3 (this bucket only) + SSM | ![](docs/screenshots/25-aws-iam-role-permissions.png) |
 | 26 | Security group found by its `Project` default tag | ![](docs/screenshots/26-aws-security-group-list.png) |
 | 27 | Inbound rules: HTTP 80 and SSH 22 | ![](docs/screenshots/27-aws-security-group-inbound.png) |
+
+### 7. Tear down
+
+| # | Step | Screenshot |
+|---|---|---|
+| 28 | `terraform destroy` — 20 resources destroyed | ![](docs/screenshots/28-terraform-destroy.png) |
